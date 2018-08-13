@@ -5,19 +5,120 @@ $(function () {
         e.preventDefault();
         var formObject = $(this);
         var data = formObject.serializeObject();
-        console.log(data); return;
-        if (data.username) {
-            formObject.fadeOut("fast", "linear", function () {
-                consultarUsuario(data);
-            });
-        } else {
-            swal("Error", "¡Debe ingresar su usuario!", "error");
+        var typeValueForm = $('.bet-type-form').val();
+        var typeValue, selectedValue;
+        var dataSend;
+        typeValue = undefined;
+
+        if (!data.betPoints) {
+            swal("Error", "¡Debe ingresar los puntos a apostar!", "error");
+            return;
         }
+        console.log(data['user.points'])
+        if (parseInt(data.betPoints) > data['user.points']) {
+            swal("Error", "No hay puntos suficientes para esta jugada", "error");
+            return;
+        }
+
+        for (var i = 0; i < fullInformationBets.length; i++) {
+            if (typeValueForm == fullInformationBets[i].id) {
+                selectedValue = fullInformationBets[i];
+                typeValue = fullInformationBets[i].type;
+                i = fullInformationBets.length;
+            }
+        }
+
+        dataSend = {
+            id: null,
+            wonPoints: 0,
+            betPoints: data.betPoints,
+            selectedBet: '',
+            user: {
+                username: data['user.username']
+            },
+            bet: {
+                id: typeValueForm
+            }
+        };
+
+        if (typeValue == 'N') {
+            //number
+            if (!data.selectedBetNumbers) {
+                swal("Error", "Debe ingresar los numeros a apostar", "error");
+                return;
+            }
+
+            dataSend.selectedBet = data.selectedBetNumbers;
+            var numeros = dataSend.selectedBet.split(',');
+            if (numeros.length > selectedValue.betCount) {
+                swal("Error", "Solo se pueden ingresar " + selectedValue.betCount + " número(s)", "error");
+                return;
+            }
+            for (var i = 0; i < numeros.length; i++) {
+                if (numeros[i] > 36) {
+                    swal("Error", "El valor máximo es 36", "error");
+                    return;
+                }
+            }
+        } else if (typeValue == 'C') {
+            //Colour
+            if (!data.selectedBetColour) {
+                swal("Error", "Debe seleccionar el color a apostar", "error");
+                return;
+            }
+            dataSend.selectedBet = data.selectedBetColour;
+        } else if (typeValue == 'E') {
+            //Even/Odd
+            if (!data.selectedBetEven) {
+                swal("Error", "Debe seleccionar la apuesta", "error");
+                return;
+            }
+            dataSend.selectedBet = data.selectedBetEven;
+        } else if (typeValue == 'H') {
+            //High/low
+            if (!data.selectedBetHalf) {
+                swal("Error", "Debe seleccionar la apuesta", "error");
+                return;
+            }
+            dataSend.selectedBet = data.selectedBetHalf;
+        }
+        console.log(data); //return;
+        console.log(dataSend);
+
+        $.ajax({
+            type: "POST",
+            url: baseURL + "roulette/betuser",
+            data: JSON.stringify(dataSend),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (dataResponse) {
+                console.log(dataResponse);
+                if (!dataResponse) {
+                    swal("Error", "Ocurrió un error al obtener los datos.", "error");
+                    return;
+                }
+                if (dataResponse.status === 'SUCCESS') {
+                    saveDataUserToForm(dataResponse.info.user);
+                    setHeaderInfoForUser(dataResponse.info.user);
+                    if (dataResponse.info.wonPoints > 0) {
+                        //you win
+                        swal("¡Ganador!", "Usted gana " + dataResponse.info.wonPoints + " puntos, el número que salió fue: " + dataResponse.info.luckyNumber, "success");
+                    } else {
+                        //
+                        swal("¡Perdió!", "Usted pierde, el número que salió fue: " + dataResponse.info.luckyNumber, "error");
+                    }
+                } else {
+                    swal(dataResponse.message);
+                }
+            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                swal("Error", "Error al conectarse al backend", "error");
+            }
+        });
+
     });
 
     $('.bet-type-form').on('change', function (e) {
         var typeValueForm = $('.bet-type-form').val();
-        console.log(typeValueForm)
         var typeValue;
         typeValue = undefined;
         for (var i = 0; i < fullInformationBets.length; i++) {

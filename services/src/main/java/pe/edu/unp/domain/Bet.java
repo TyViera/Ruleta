@@ -1,13 +1,11 @@
 package pe.edu.unp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -23,6 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "bets")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Bet implements Serializable {
 
     @Id
@@ -30,13 +29,13 @@ public class Bet implements Serializable {
     private Long id;
 
     private String name;
-    
+
     private Integer betCount;
-    
+
     private String type;
-    
+
     private Integer multiplier;
-    
+
     @OneToMany(mappedBy = "bet")
     private List<UserBets> bets;
 

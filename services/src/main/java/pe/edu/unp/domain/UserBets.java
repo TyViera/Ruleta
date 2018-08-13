@@ -1,5 +1,6 @@
 package pe.edu.unp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -28,16 +29,20 @@ public class UserBets implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private Long wonPoints;
+    private Integer luckyNumber;
     
-    private Long betPoints;
+    private Integer wonPoints;
+    
+    private Integer betPoints;
     
     private String selectedBet;
 
+    @JsonIgnoreProperties("bets")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnoreProperties("bets")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bets_id")
     private Bet bet;

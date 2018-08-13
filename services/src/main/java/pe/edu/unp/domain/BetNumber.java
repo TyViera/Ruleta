@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pe.edu.unp.util.Constants;
 
 @Getter
 @Setter
@@ -28,12 +29,20 @@ public class BetNumber implements Serializable {
 
     private String colour;
 
-//    public Boolean getIsEven() {
-//        return (number > 0) && (number % 2 == 0);
-//    }
-//
-//    public Boolean getIsHalf() {
-//        return (number > 0) && (number <= Constants.HALF_ROULETTE);
-//    }
+    public Boolean isEven() {
+        return (number > 0) && (number % 2 == 0);
+    }
+
+    public Boolean isOdd() {
+        return (number > 0) && (number % 2 != 0);
+    }
+
+    public Boolean isLow() {
+        return (0 < number) && (number <= Constants.HALF_ROULETTE);
+    }
+
+    public Boolean isHigh() {
+        return (Constants.HALF_ROULETTE < number) && (number <= Constants.FULL_ROULETTE);
+    }
 
 }

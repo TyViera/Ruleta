@@ -34,8 +34,8 @@ public class StartServiceImpl implements StartService {
 
     @Override
     public void deleteAllData() {
-        userRepository.deleteAll();
         userBetRepository.deleteAll();
+        userRepository.deleteAll();
         betRepository.deleteAll();
         betNumberRepository.deleteAll();
     }
