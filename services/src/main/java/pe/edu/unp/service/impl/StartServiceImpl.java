@@ -1,5 +1,8 @@
 package pe.edu.unp.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,7 @@ public class StartServiceImpl implements StartService {
     @Override
     public void initRouletteData() {
         //star the roulette
+        Integer redNumbers[] = new Integer[]{1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36};
         BetNumber greenBetNumber;
         greenBetNumber = new BetNumber();
         greenBetNumber.setNumber(0);
@@ -50,7 +54,11 @@ public class StartServiceImpl implements StartService {
                     BetNumber betNumber;
                     betNumber = new BetNumber();
                     betNumber.setNumber(index);
-                    betNumber.setColour((Math.random() < 0.5) ? ColourEnum.BLACK.getValue() : ColourEnum.RED.getValue());
+                    if (Arrays.asList(redNumbers).contains(index)) {
+                        betNumber.setColour(ColourEnum.RED.getValue());
+                    } else {
+                        betNumber.setColour(ColourEnum.BLACK.getValue());
+                    }
                     betNumberRepository.save(betNumber);
                 });
 

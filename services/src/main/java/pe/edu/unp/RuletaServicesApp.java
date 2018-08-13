@@ -11,13 +11,13 @@ import pe.edu.unp.service.StartService;
 public class RuletaServicesApp {
 
     private static final Logger logger = LoggerFactory.getLogger(RuletaServicesApp.class);
-    
+
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(RuletaServicesApp.class, args);
-//        StartService startService = run.getBean(StartService.class);
-//        logger.info("DELETE ALL DATA FROM TABLES");
-//        startService.deleteAllData();
-//        logger.info("INIR ROULETTE DATA FROM SEED");
-//        startService.initRouletteData();
+        StartService startService = run.getBean(StartService.class);
+        logger.info("DELETE ALL DATA FROM TABLES");
+        startService.deleteAllData();
+        logger.info("INIR ROULETTE DATA FROM SEED");
+        startService.initRouletteData();
     }
 }

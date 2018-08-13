@@ -2,9 +2,9 @@ package pe.edu.unp.enums;
 
 public enum ColourEnum {
 
-    GREEN("G"),
-    RED("R"),
-    BLACK("B");
+    GREEN("green"),
+    RED("red"),
+    BLACK("black");
 
     private final String value;
 

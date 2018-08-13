@@ -1,3 +1,6 @@
+var baseURL = "http://localhost:8080/"
+var fullInformationBets = [];
+
 function passtoB64(texto) {
     //var elem = $("div")[0].outerHTML;
     var blob = new Blob([texto], {
@@ -35,8 +38,10 @@ $.fn.serializeObject = function () {
 };
 
 $(function () {
-    var baseURL = "http://localhost:8080/"
     $('.form-control-register').fadeOut("fast", "linear");
+
+    // $('.form-control-login').fadeOut("fast", "linear");
+    // mostrarContenidoJuego({ username: 'ty', points: 100 });
 
     $('.form-control-login').on('submit', function (e) {
         e.preventDefault();
@@ -47,9 +52,8 @@ $(function () {
                 consultarUsuario(data);
             });
         } else {
-            swal("¡Debe ingresar su usuario!");
+            swal("Error", "¡Debe ingresar su usuario!", "error");
         }
-
     });
 
     $('.form-control-register').on('submit', function (e) {
@@ -59,7 +63,7 @@ $(function () {
         if (data.fullName) {
             registerUser(data);
         } else {
-            swal("¡Debe ingresar su nombre completo!");
+            swal("Error", "¡Debe ingresar su nombre completo!", "error");
         }
 
     });
@@ -73,7 +77,7 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 if (!data) {
-                    swal("Ocurrió un error al obtener los datos.");
+                    swal("Error", "Ocurrió un error al obtener los datos.", "error");
                     return;
                 }
                 if (data.status === 'SUCCESS') {
@@ -83,7 +87,7 @@ $(function () {
                     swal(data.message);
                 }
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
-                swal("Error al conectarse al backend");
+                swal("Error", "Error al conectarse al backend", "error");
             }
         });
     }
@@ -91,7 +95,7 @@ $(function () {
     function consultarUsuario(user) {
         $.get(baseURL + "user/" + user.username, function (data) {
             if (!data) {
-                swal("Ocurrió un error al obtener los datos.");
+                swal("Error", "Ocurrió un error al obtener los datos.", "error");
                 return;
             }
             if (!data.info) {
@@ -99,24 +103,55 @@ $(function () {
                 $('#username-txt').val(user.username);
                 $('.form-control-register').fadeIn("fast", "linear");
             } else {
-                $('#contenido-juego').fadeOut("fast", "linear", mostrarContenidoJuego);
                 getChairRoulette(data.info);
             }
 
         }).fail(function () {
-            swal("Error al conectarse al backend");
+            swal("Error", "Error al conectarse al backend", "error");
         });
     }
 
     function getChairRoulette(user) {
         console.log(user);
-        swal('bienvenido: ' + user.fullName + ' buscaremos una silla para ti, por favor espera...');
+        swal({
+            title: '¡Bienvenido: ' + user.fullName + '!',
+            text: 'Buscaremos una silla para ti, por favor espera...',
+            showLoaderOnConfirm: true,
+            timer: 2000
+        });
+        $.get(baseURL + "roulette/chair/" + user.username, function (data) {
+            if (!data) {
+                swal("Error", "Ocurrió un error al obtener los datos.", "error");
+                return;
+            }
+            if (!data.info) {
+                //no hay cupo
+                swal(data.message);
+            } else {
+                //get chair complete, show roulette table
+                $('#contenido-juego').fadeOut("fast", "linear", function () {
+                    mostrarContenidoJuego(user);
+                });
+            }
+
+        }).fail(function () {
+            swal("Error", "Error al conectarse al backend", "error");
+        });
     }
 
-    function mostrarContenidoJuego() {
+    function mostrarContenidoJuego(user) {
         $.get(window.location.origin + window.location.pathname + "partials/game.html", function (htmlexterno) {
+            //get game html
             $('#contenido-juego').html(htmlexterno);
             $('#contenido-juego').fadeIn("fast", "linear");
+            loadRouletteGame();
+
+            //set user data to screen
+            saveDataUserToForm(user);
+            setHeaderInfoForUser(user);
+
+            //load data for bets
+            loadBets();
         });
 
     }

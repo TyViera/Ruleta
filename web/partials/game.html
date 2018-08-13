@@ -1,3 +1,80 @@
-<div>
-    ASDASDASD
+<!-- <div>
+    <div class="row">
+        <div class="col-md-6">
+MERLI, RITTA, 
+        </div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+</div> -->
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="text-right text-info-greet">Hola: {0}, actualmente tienes {1} puntos de crédito.</h4>
+    </div>
 </div>
+<hr/>
+<div class="row">
+    <div class="col-md-8">
+        <div class="roulette">
+            <table class="table-roulette">
+                <!-- <tr>
+            <td class="empty"></td>
+            <td colspan="2" class="sector" data-sector="7">1 to 18</td>
+            <td colspan="2" class="sector" data-sector="8">EVEN</td>
+            <td colspan="2" class="sector red" data-sector="9">RED</td>
+            <td colspan="2" class="sector black" data-sector="10">BLACK</td>
+            <td colspan="2" class="sector" data-sector="11">ODD</td>
+            <td colspan="2" class="sector" data-sector="12">19 to 36</td>
+            <td class="empty"></td>
+        </tr> -->
+            </table>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-horizontal">
+            <form class="form-control-bet">
+                <input class="username-bet" type="hidden" name="user.username" />
+                <input class="username-points" type="hidden" name="user.points" />
+                <div class="form-group">
+                    <label for="bet.id">Tipo de apuesta</label>
+                    <select class="form-control bet-type-form" name="bet.id"></select>
+                </div>
+                <div class="form-group">
+                    <label for="betPoints">Puntos a apostar</label>
+                    <input type="text" name="betPoints" id="betPoints" class="form-control" placeholder="Ingrese puntos a apostar" aria-describedby="helpId">
+                    <small id="helpId" class="text-muted">La cantidad no debe superar a sus puntos disponibles.</small>
+                </div>
+                <div class="form-group form-group-number">
+                    <label for="selectedBetNumbers">Apuestas</label>
+                    <input type="text" name="selectedBetNumbers" id="selectedBetNumbers" class="form-control" placeholder="Ingrese números de apuesta">
+                </div>
+                <div class="form-group form-group-colour">
+                    <label for="selectedBetColour">Apuesta</label>
+                    <select class="form-control" name="selectedBetColour">
+                        <option value="red">Rojo</option>
+                        <option value="black">Negro</option>
+                    </select>
+                </div>
+                <div class="form-group form-group-even">
+                    <label for="selectedBetEven">Apuesta</label>
+                    <select class="form-control" name="selectedBetEven">
+                        <option value="even">Par</option>
+                        <option value="odd">Impar</option>
+                    </select>
+                </div>
+                <div class="form-group form-group-half">
+                    <label for="selectedBetHalf">Apuesta</label>
+                    <select class="form-control" name="selectedBetHalf">
+                        <option value="high">Alto</option>
+                        <option value="low">Bajo</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning">¡Apostar!</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="js/roulette.js"></script>
+<!-- <script src="lib/jquery/jquery.easing.min.js"></script>
+<script src="js/roulette.js"></script> -->
