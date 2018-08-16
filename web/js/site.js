@@ -40,8 +40,8 @@ $.fn.serializeObject = function () {
 $(function () {
     $('.form-control-register').fadeOut("fast", "linear");
 
-    // $('.form-control-login').fadeOut("fast", "linear");
-    // mostrarContenidoJuego({ username: 'ty', points: 100 });
+    //  $('.form-control-login').fadeOut("fast", "linear");
+    //  mostrarContenidoJuego({ username: 'ty', points: 100 });
 
     $('.form-control-login').on('submit', function (e) {
         e.preventDefault();
@@ -82,7 +82,7 @@ $(function () {
                 }
                 if (data.status === 'SUCCESS') {
                     //todo ok, pedir silla
-                    getChairRoulette(user);
+                    consultarUsuario(user);
                 } else {
                     swal(data.message);
                 }
@@ -112,7 +112,6 @@ $(function () {
     }
 
     function getChairRoulette(user) {
-        console.log(user);
         swal({
             title: '¡Bienvenido: ' + user.fullName + '!',
             text: 'Buscaremos una silla para ti, por favor espera...',

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 import pe.edu.unp.service.RouletteService;
+import pe.edu.unp.util.Constants;
 
 @Service
 public class RouletteServiceImpl implements RouletteService {
@@ -17,7 +18,7 @@ public class RouletteServiceImpl implements RouletteService {
     @Override
     public Integer getChair(String userName) {
         synchronized (chairs) {
-            if (chairs.size() == 10) {
+            if (chairs.size() == Constants.MAX_CHAIRS) {
                 return -1;
             } else {
                 chairs.add(userName);
